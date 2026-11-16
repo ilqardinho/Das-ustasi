@@ -2,9 +2,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { DailyRewardsScreen } from './components/DailyRewardsModal';
 import { GameBoard } from './components/GameBoard';
 import { LevelMap } from './components/LevelMap';
+import { MenuAmbientCanvas } from './components/MenuAmbientCanvas';
 import { MultiplayerScreen } from './components/MultiplayerModal';
 import { SettingsScreen } from './components/SettingsModal';
 import { ShopScreen } from './components/ShopModal';
+import { getTableBackgroundStyle } from './components/TableTheme';
 import { TitleScreen } from './components/TitleScreen';
 import { DAILY_LOGIN_REWARDS } from './data/shop';
 import { getDailyChallengeLevel, getLevelSeed, LEVELS } from './game/levels';
@@ -426,8 +428,11 @@ export default function App() {
     );
   }
 
+  const menuTableStyle = getTableBackgroundStyle(progress.equippedCosmetics.tables);
+
+  let menuViewNode: React.ReactNode;
   if (view === 'multiplayer') {
-    return (
+    menuViewNode = (
       <MultiplayerScreen
         t={t}
         progress={progress}
@@ -448,10 +453,8 @@ export default function App() {
         onBack={() => setView('title')}
       />
     );
-  }
-
-  if (view === 'map') {
-    return (
+  } else if (view === 'map') {
+    menuViewNode = (
       <LevelMap
         t={t}
         progress={progress}
@@ -462,10 +465,8 @@ export default function App() {
         onBack={() => setView('title')}
       />
     );
-  }
-
-  if (view === 'shop') {
-    return (
+  } else if (view === 'shop') {
+    menuViewNode = (
       <ShopScreen
         t={t}
         progress={progress}
@@ -473,10 +474,8 @@ export default function App() {
         onBack={() => setView('title')}
       />
     );
-  }
-
-  if (view === 'daily') {
-    return (
+  } else if (view === 'daily') {
+    menuViewNode = (
       <DailyRewardsScreen
         t={t}
         progress={progress}
@@ -485,10 +484,8 @@ export default function App() {
         onBack={() => setView('title')}
       />
     );
-  }
-
-  if (view === 'settings') {
-    return (
+  } else if (view === 'settings') {
+    menuViewNode = (
       <SettingsScreen
         t={t}
         progress={progress}
@@ -498,31 +495,43 @@ export default function App() {
         onBack={() => setView('title')}
       />
     );
+  } else {
+    menuViewNode = (
+      <TitleScreen
+        t={t}
+        progress={progress}
+        settings={settings}
+        canClaimDailyReward={canClaimDailyReward}
+        dailyChallengeDone={dailyChallengeDone}
+        onStartContinue={handleStartContinue}
+        onOpenMap={() => setView('map')}
+        onOpenDailyChallenge={handleStartDaily}
+        onOpenDailyRewards={() => setView('daily')}
+        onOpenShop={() => setView('shop')}
+        onOpenSettings={() => setView('settings')}
+        onOpenMultiplayer={() => setView('multiplayer')}
+        onToggleMusic={() =>
+          handleUpdateSettings({
+            musicEnabled: !settings.musicEnabled,
+            musicVolume:
+              !settings.musicEnabled && settings.musicVolume <= 0
+                ? 0.45
+                : settings.musicVolume,
+          })
+        }
+      />
+    );
   }
 
   return (
-    <TitleScreen
-      t={t}
-      progress={progress}
-      settings={settings}
-      canClaimDailyReward={canClaimDailyReward}
-      dailyChallengeDone={dailyChallengeDone}
-      onStartContinue={handleStartContinue}
-      onOpenMap={() => setView('map')}
-      onOpenDailyChallenge={handleStartDaily}
-      onOpenDailyRewards={() => setView('daily')}
-      onOpenShop={() => setView('shop')}
-      onOpenSettings={() => setView('settings')}
-      onOpenMultiplayer={() => setView('multiplayer')}
-      onToggleMusic={() =>
-        handleUpdateSettings({
-          musicEnabled: !settings.musicEnabled,
-          musicVolume:
-            !settings.musicEnabled && settings.musicVolume <= 0
-              ? 0.45
-              : settings.musicVolume,
-        })
-      }
-    />
+    <div
+      className="min-h-full w-full relative overflow-x-hidden"
+      style={menuTableStyle}
+    >
+      <MenuAmbientCanvas tableId={progress.equippedCosmetics.tables} />
+      <div className="relative z-10 min-h-full w-full">
+        {menuViewNode}
+      </div>
+    </div>
   );
 }

@@ -25,7 +25,7 @@ import {
 } from '../game/types';
 import { Translations } from '../i18n/translations';
 import { RoomSocketStatus } from '../utils/useMultiplayerRoom';
-import { AvatarEmblem, getTableBackgroundStyle } from './TableTheme';
+import { AvatarEmblem } from './TableTheme';
 
 interface MultiplayerScreenProps {
   t: Translations;
@@ -78,7 +78,6 @@ export const MultiplayerScreen: React.FC<MultiplayerScreenProps> = ({
   onClearError,
   onBack,
 }) => {
-  const tableStyle = getTableBackgroundStyle(progress.equippedCosmetics.tables);
   const [tab, setTab] = useState<'create' | 'join'>(initialJoinCode ? 'join' : 'create');
   const [nameDraft, setNameDraft] = useState(playerName);
   const [category, setCategory] = useState<RoomCategoryFilter>('all');
@@ -168,7 +167,7 @@ export const MultiplayerScreen: React.FC<MultiplayerScreenProps> = ({
   };
 
   return (
-    <div className="min-h-full w-full text-stone-100 flex flex-col" style={tableStyle}>
+    <div className="min-h-full w-full text-stone-100 flex flex-col">
       {/* Sticky Header */}
       <header className="sticky top-0 z-20 bg-black/65 border-b border-white/10">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-3">

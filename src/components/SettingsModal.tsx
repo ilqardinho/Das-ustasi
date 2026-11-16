@@ -5,7 +5,6 @@ import { LanguageCode, PlayerProgress, PlayerSettings } from '../game/types';
 import { LANGUAGE_LABELS, Translations } from '../i18n/translations';
 import { triggerHaptic } from '../utils/audio';
 import { speakDominiMessage } from '../utils/dominiVoice';
-import { getTableBackgroundStyle } from './TableTheme';
 
 interface SettingsScreenProps {
   t: Translations;
@@ -27,8 +26,6 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deletedToast, setDeletedToast] = useState(false);
 
-  const tableStyle = getTableBackgroundStyle(progress.equippedCosmetics.tables);
-
   const languages: LanguageCode[] = ['az', 'en', 'tr', 'ru'];
 
   const handleConfirmDelete = () => {
@@ -39,7 +36,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
   };
 
   return (
-    <div className="min-h-full w-full text-stone-100 flex flex-col" style={tableStyle}>
+    <div className="min-h-full w-full text-stone-100 flex flex-col">
       <header className="sticky top-0 z-20 bg-black/65 border-b border-white/10">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3 min-w-0">

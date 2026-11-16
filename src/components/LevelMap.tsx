@@ -4,7 +4,6 @@ import { getDailyChallengeLevel, LEVELS } from '../game/levels';
 import { PlayerProgress } from '../game/types';
 import { Translations } from '../i18n/translations';
 import { getTodayIso } from '../utils/storage';
-import { getTableBackgroundStyle } from './TableTheme';
 
 interface LevelMapProps {
   t: Translations;
@@ -26,7 +25,6 @@ export const LevelMap: React.FC<LevelMapProps> = ({
   onBack,
 }) => {
   const [filterMode, setFilterMode] = useState<'all' | 'timed'>('all');
-  const tableStyle = getTableBackgroundStyle(progress.equippedCosmetics.tables);
   const dailyMeta = useMemo(() => getDailyChallengeLevel(getTodayIso()).config, []);
 
   const visibleLevels =
@@ -44,7 +42,6 @@ export const LevelMap: React.FC<LevelMapProps> = ({
   return (
     <div
       className="min-h-full w-full text-stone-100 flex flex-col"
-      style={tableStyle}
     >
       {/* Top Bar */}
       <header className="sticky top-0 z-20 bg-black/65 border-b border-white/10">

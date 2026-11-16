@@ -3,7 +3,6 @@ import { ArrowLeft, Check, Coins, Gift } from 'lucide-react';
 import { DAILY_LOGIN_REWARDS } from '../data/shop';
 import { PlayerProgress } from '../game/types';
 import { Translations } from '../i18n/translations';
-import { getTableBackgroundStyle } from './TableTheme';
 
 interface DailyRewardsScreenProps {
   t: Translations;
@@ -20,11 +19,10 @@ export const DailyRewardsScreen: React.FC<DailyRewardsScreenProps> = ({
   onClaimToday,
   onBack,
 }) => {
-  const tableStyle = getTableBackgroundStyle(progress.equippedCosmetics.tables);
   const currentDayIndex = progress.dailyLoginStreak % DAILY_LOGIN_REWARDS.length;
 
   return (
-    <div className="min-h-full w-full text-stone-100 flex flex-col" style={tableStyle}>
+    <div className="min-h-full w-full text-stone-100 flex flex-col">
       <header className="sticky top-0 z-20 bg-black/65 border-b border-white/10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3 min-w-0">

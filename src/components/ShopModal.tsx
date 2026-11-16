@@ -4,7 +4,7 @@ import { PHASE2_COIN_PACKS, SHOP_ITEMS } from '../data/shop';
 import { CosmeticCategory, PlayerProgress, ShopItem } from '../game/types';
 import { Translations } from '../i18n/translations';
 import { build3DTileBoxShadow, getTileMaterialColors } from './DominoTileView';
-import { AvatarEmblem, getTableBackgroundStyle } from './TableTheme';
+import { AvatarEmblem } from './TableTheme';
 
 interface ShopScreenProps {
   t: Translations;
@@ -22,8 +22,6 @@ export const ShopScreen: React.FC<ShopScreenProps> = ({
   const [tab, setTab] = useState<CosmeticCategory | 'coins'>('tiles');
   const [restoreNoteVisible, setRestoreNoteVisible] = useState(false);
 
-  const tableStyle = getTableBackgroundStyle(progress.equippedCosmetics.tables);
-
   const tabs: { id: CosmeticCategory | 'coins'; label: string }[] = [
     { id: 'tiles', label: t.shopTiles },
     { id: 'tables', label: t.shopTables },
@@ -39,7 +37,7 @@ export const ShopScreen: React.FC<ShopScreenProps> = ({
     progress.equippedCosmetics[item.category] === item.id;
 
   return (
-    <div className="min-h-full w-full text-stone-100 flex flex-col" style={tableStyle}>
+    <div className="min-h-full w-full text-stone-100 flex flex-col">
       <header className="sticky top-0 z-20 bg-black/65 border-b border-white/10">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3 min-w-0">

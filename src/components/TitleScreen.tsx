@@ -7,7 +7,7 @@ import { PlayerProgress, PlayerSettings } from '../game/types';
 import { Translations } from '../i18n/translations';
 import { speakDominiMessage } from '../utils/dominiVoice';
 import { getTileMaterialColors } from './DominoTileView';
-import { AvatarEmblem, getTableBackgroundStyle } from './TableTheme';
+import { AvatarEmblem } from './TableTheme';
 
 interface TitleScreenProps {
   t: Translations;
@@ -42,7 +42,6 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({
 }) => {
   const menuGreeting = getDominiMenuGreeting(settings.language);
   const stats = computePlayerStats(progress);
-  const tableStyle = getTableBackgroundStyle(progress.equippedCosmetics.tables);
   const ivoryColors = getTileMaterialColors('tile_ivory');
   const heroShadowLeft = [
     `inset 0 1.5px 0 ${ivoryColors.innerTopHighlight}`,
@@ -65,7 +64,6 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({
   return (
     <div
       className="min-h-full w-full flex flex-col justify-between text-stone-100 relative overflow-x-hidden"
-      style={tableStyle}
     >
       {/* Subtle geometric lattice overlay */}
       <div

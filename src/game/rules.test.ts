@@ -49,6 +49,7 @@ import {
 import { getDefaultProgress, getDefaultSettings, normalizeSettings } from '../utils/storage';
 import { computeMusicAdaptiveProfile, triggerHaptic } from '../utils/audio';
 import { createExplosionParticles, stepExplosionParticles } from './particles';
+import { createAmbientParticles, getAmbientPalette, stepAmbientParticles } from './ambientParticles';
 import { BoardTile, RoomPlayerState, TileSlot } from './types';
 
 test('standard double-six domino set contains exactly 28 unique tiles', () => {
@@ -553,5 +554,24 @@ test('createExplosionParticles and stepExplosionParticles generate, animate, and
     current = stepExplosionParticles(current, 0.04);
   }
   assert.equal(current.length, 0);
+});
+
+test('createAmbientParticles and stepAmbientParticles produce persistent multi-depth particles with theme palettes and wrapping', () => {
+  const emerald = createAmbientParticles({ count: 36, tableId: 'table_emerald' });
+  const indigo = createAmbientParticles({ count: 36, tableId: 'table_indigo' });
+  assert.equal(emerald.length, 36);
+  assert.ok(emerald.some((p) => p.kind === 'orb'));
+  assert.ok(emerald.some((p) => p.kind === 'domino'));
+  assert.ok(emerald.some((p) => p.depth < 0.5) && emerald.some((p) => p.depth > 0.7));
+  assert.notDeepEqual(getAmbientPalette('table_emerald'), getAmbientPalette('table_indigo'));
+  assert.equal(indigo[0].color, getAmbientPalette('table_indigo')[0]);
+
+  let current = emerald;
+  for (let i = 0; i < 60; i++) {
+    current = stepAmbientParticles(current, 0.05, i * 0.05);
+  }
+  assert.equal(current.length, 36);
+  assert.ok(current.every((p) => p.x >= -0.05 && p.x <= 1.05 && p.y >= -0.06 && p.y <= 1.08));
+  assert.ok(current[0].y !== emerald[0].y);
 });
 
